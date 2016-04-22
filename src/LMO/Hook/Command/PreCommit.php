@@ -59,7 +59,9 @@ class PreCommit extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $hasError = false;
-        $output->writeln('<info>PRE-COMMIT START</info>');
+        $output->writeln('<question>                            </question>');
+        $output->writeln('<question>      PRE-COMMIT START      </question>');
+        $output->writeln('<question>                            </question>');
         $process = new Process(
             'git diff -U0 --diff-filter=ACMR --cached',
             $this->config['projectPath']
@@ -71,8 +73,10 @@ class PreCommit extends Command
             $errorMessages = $checker->checkFiles($editedFiles);
             if (!empty($errorMessages)) {
                 $hasError = true;
+                $output->writeln('');
                 $output->writeln(
-                    '<error>' . $checker->getName() . ' found the following errors</error>'
+                    '<bg=yellow;fg=black>' .
+                    $checker->getName() . ' found the following errors</>'
                 );
                 foreach ($errorMessages as $errorMessage) {
                     $output->writeln($errorMessage);
@@ -80,7 +84,11 @@ class PreCommit extends Command
             }
         }
 
-        $output->writeln('<info>PRE-COMMIT END</info>');
+        if (!$hasError) {
+            $output->writeln('<fg=black;bg=green>                            </>');
+            $output->writeln('<fg=black;bg=green>       PRE-COMMIT END       </>');
+            $output->writeln('<fg=black;bg=green>                            </>');
+        }
         return $hasError ? 1 : 0;
     }
 }
