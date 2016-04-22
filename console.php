@@ -5,9 +5,9 @@ require __DIR__ . '/vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
 
-$config = [
-    'projectPath' => '../web-metrics'
-];
+$config = \Symfony\Component\Yaml\Yaml::parse(
+    file_get_contents('config/config.yml')
+);
 
 $application = new Application();
 $application->add(

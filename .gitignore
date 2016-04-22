@@ -1,2 +1,4 @@
 /.idea
 /vendor/
+/config/*
+!/config/config.yml.dist
