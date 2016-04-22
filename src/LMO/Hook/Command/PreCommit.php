@@ -61,7 +61,7 @@ class PreCommit extends Command
         $hasError = false;
         $output->writeln('<info>PRE-COMMIT START</info>');
         $process = new Process(
-            'git diff -U0 --diff-filter=ACMR',
+            'git diff -U0 --diff-filter=ACMR --cached',
             $this->config['projectPath']
         );
         $process->run();
