@@ -17,7 +17,8 @@ class DiffParser
         array_shift($filesDiff);
         foreach ($filesDiff as $fileDiff) {
             $fileChanges = explode("\n@@", $fileDiff);
-            $file = new File\File(trim(array_shift($fileChanges)));
+            $fileName = trim(array_shift($fileChanges));
+            $file = new File\File($fileName);
             foreach ($fileChanges as $fileChange) {
                 preg_match('/\+([0-9]+)(,[0-9]+)? @@/', $fileChange, $matches);
                 $changeStartLine = intval($matches[1]);
