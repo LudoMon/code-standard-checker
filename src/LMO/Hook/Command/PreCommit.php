@@ -4,6 +4,7 @@ namespace LMO\Hook\Command;
 
 use LMO\Hook\Checker\CheckerAbstract;
 use LMO\Hook\DiffParser;
+use LMO\Hook\File\Files;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -60,13 +61,7 @@ class PreCommit extends Command
     {
         $hasError = false;
         $this->printStartMessage($output);
-        $process = new Process(
-            'git diff -U0 --diff-filter=ACMR --cached',
-            $this->config['projectPath']
-        );
-        $process->run();
-
-        $editedFiles = $this->diffParser->parse($process->getOutput());
+        $editedFiles = $this->getEditedFiles();
         foreach ($this->checkers as $checker) {
             $errorMessages = $checker->checkFiles($editedFiles);
             if (!empty($errorMessages)) {
@@ -115,5 +110,21 @@ class PreCommit extends Command
             $output->writeln('<error>   (git commit --no-verify)  </error>');
             $output->writeln('<error>                             </error>');
         }
+    }
+
+    /**
+     * @return Files
+     */
+    private function getEditedFiles()
+    {
+        $process = new Process(
+            'git diff -U0 --diff-filter=ACMR --cached',
+            $this->config['projectPath']
+        );
+        $process->run();
+
+        return $this->diffParser->parse(
+            $process->getOutput()
+        );
     }
 }
