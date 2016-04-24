@@ -14,7 +14,8 @@ $application->add(
     new \LMO\Hook\Command\PreCommit(
         $config,
         [
-            new \LMO\Hook\Checker\PhpLintChecker()
+            new \LMO\Hook\Checker\PhpLintChecker(),
+            new \LMO\Hook\Checker\ForbiddenWordsChecker(),
         ]
     )
 );

@@ -48,7 +48,7 @@ class PreCommit extends Command
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
         foreach ($this->checkers as $checker) {
-            $checkerName = $checker->getName();
+            $checkerName = lcfirst($checker->getName());
             $checker->setProjectPath($this->config['projectPath']);
             if (isset($this->config[$checkerName])) {
                 $checker->setConfig($this->config[$checkerName]);

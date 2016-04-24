@@ -15,11 +15,12 @@ class File
     }
 
     /**
-     * @param array $lineNumbers
+     * @param string $lineNumber
+     * @param string $lineContent
      */
-    public function registerEditedLines($lineNumbers)
+    public function registerEditedLine($lineNumber, $lineContent)
     {
-        $this->editedLines = array_merge($this->editedLines, $lineNumbers);
+        $this->editedLines[$lineNumber] = $lineContent;
     }
 
     /**

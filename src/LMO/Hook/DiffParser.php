@@ -22,11 +22,19 @@ class DiffParser
             foreach ($fileChanges as $fileChange) {
                 preg_match('/\+([0-9]+)(,[0-9]+)? @@/', $fileChange, $matches);
                 $changeStartLine = intval($matches[1]);
-                $editedLinesCount = substr_count($fileChange, "\n+");
-                $file->registerEditedLines(range(
-                    $changeStartLine,
-                    $changeStartLine + $editedLinesCount - 1
-                ));
+                $addedLines = array_filter(
+                    explode("\n", $fileChange),
+                    function ($line) {
+                        return strpos($line, '+') === 0;
+                    }
+                );
+                $index = 0;
+                foreach ($addedLines as $addedLine) {
+                    $file->registerEditedLine(
+                        $changeStartLine + $index++,
+                        substr($addedLine, 1)
+                    );
+                }
             }
             $editedFiles->push($file);
         }
