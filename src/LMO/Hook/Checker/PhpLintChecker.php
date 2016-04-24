@@ -7,7 +7,6 @@ use Symfony\Component\Process\Process;
 
 class PhpLintChecker extends CheckerAbstract
 {
-    protected $name = 'PHPLint';
     protected $extensions = ['php' => true];
 
     /**

@@ -11,6 +11,20 @@ abstract class CheckerAbstract
     protected $extensions = [];
     protected $config = [];
 
+    public function __construct()
+    {
+        if (empty($this->name)) {
+            $namespace = explode('\\', get_class($this));
+            $this->name = end($namespace);
+        }
+
+        if (empty($this->extensions)) {
+            throw new \Exception(
+                'A checker must care about file extensions'
+            );
+        }
+    }
+
     /**
      * @param Files  $files
      * @return array An array of error messages
@@ -24,12 +38,6 @@ abstract class CheckerAbstract
      */
     public function checkFiles($files)
     {
-        if (empty($this->name) || empty($this->extensions)) {
-            throw new \Exception(
-                'A checker must have a name and care about file extensions'
-            );
-        }
-
         if (empty($this->projectPath)) {
             throw new \Exception('Repository must be set before checking files');
         }
