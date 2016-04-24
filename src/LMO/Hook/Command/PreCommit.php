@@ -59,9 +59,7 @@ class PreCommit extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $hasError = false;
-        $output->writeln('<question>                            </question>');
-        $output->writeln('<question>      PRE-COMMIT START      </question>');
-        $output->writeln('<question>                            </question>');
+        $this->printStartMessage($output);
         $process = new Process(
             'git diff -U0 --diff-filter=ACMR --cached',
             $this->config['projectPath']
@@ -84,11 +82,38 @@ class PreCommit extends Command
             }
         }
 
-        if (!$hasError) {
-            $output->writeln('<fg=black;bg=green>                            </>');
-            $output->writeln('<fg=black;bg=green>       PRE-COMMIT END       </>');
-            $output->writeln('<fg=black;bg=green>                            </>');
-        }
+        $this->printEndMessage($output, $hasError);
         return $hasError ? 1 : 0;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @return void
+     */
+    private function printStartMessage(OutputInterface $output)
+    {
+        $output->writeln('<question>                             </question>');
+        $output->writeln('<question>       PRE-COMMIT HOOK       </question>');
+        $output->writeln('<question>                             </question>');
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param bool            $hasError
+     * @return void
+     */
+    private function printEndMessage(OutputInterface $output, $hasError)
+    {
+        $output->writeln('');
+        if (!$hasError) {
+            $output->writeln('<fg=black;bg=green>                             </>');
+            $output->writeln('<fg=black;bg=green>       COMMIT ACCEPTED       </>');
+            $output->writeln('<fg=black;bg=green>                             </>');
+        } else {
+            $output->writeln('<error>                             </error>');
+            $output->writeln('<error>       COMMIT REJECTED       </error>');
+            $output->writeln('<error>   (git commit --no-verify)  </error>');
+            $output->writeln('<error>                             </error>');
+        }
     }
 }
