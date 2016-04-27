@@ -8,6 +8,7 @@ abstract class CheckerAbstract
 {
     protected $name;
     protected $projectPath = '';
+    protected $vendorBinPath;
     protected $extensions = [];
     protected $config = [];
 
@@ -67,6 +68,14 @@ abstract class CheckerAbstract
     {
         $this->config = $config;
         return $this;
+    }
+
+    /**
+     * @param string $vendorBinPath
+     */
+    public function setVendorBinPath($vendorBinPath)
+    {
+        $this->vendorBinPath = $vendorBinPath;
     }
 
     /**

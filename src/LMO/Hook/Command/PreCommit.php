@@ -51,6 +51,7 @@ class PreCommit extends Command
         foreach ($this->checkers as $checker) {
             $checkerName = lcfirst($checker->getName());
             $checker->setProjectPath($this->config['projectPath']);
+            $checker->setVendorBinPath($this->config['vendorBinPath']);
             if (isset($this->config[$checkerName])) {
                 $checker->setConfig($this->config[$checkerName]);
             }
