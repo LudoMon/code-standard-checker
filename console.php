@@ -6,7 +6,7 @@ require __DIR__ . '/vendor/autoload.php';
 use Symfony\Component\Console\Application;
 
 $config = \Symfony\Component\Yaml\Yaml::parse(
-    file_get_contents('config/config.yml')
+    file_get_contents(__DIR__ . '/config/config.yml')
 );
 
 $application = new Application();
