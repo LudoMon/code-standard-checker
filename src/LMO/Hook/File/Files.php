@@ -108,4 +108,18 @@ class Files implements \Iterator
         }
         return $filteredFiles;
     }
+
+    /**
+     * @param string $fileName
+     * @return bool|File
+     */
+    public function getFile($fileName)
+    {
+        foreach ($this->files as $file) {
+            if ($file->getName() === $fileName) {
+                return $file;
+            }
+        }
+        return false;
+    }
 }
