@@ -9,7 +9,7 @@ abstract class CheckerAbstract
 {
     protected $name;
     protected $projectPath = '';
-    protected $vendorBinPath;
+    protected $vendorBinPaths;
     protected $extensions = [];
     protected $config = [];
 
@@ -90,11 +90,11 @@ abstract class CheckerAbstract
     }
 
     /**
-     * @param string $vendorBinPath
+     * @param array $vendorBinPaths
      */
-    public function setVendorBinPath($vendorBinPath)
+    public function setVendorBinPaths($vendorBinPaths)
     {
-        $this->vendorBinPath = $vendorBinPath;
+        $this->vendorBinPaths = $vendorBinPaths;
     }
 
     /**
