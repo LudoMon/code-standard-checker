@@ -2,7 +2,6 @@
 
 namespace LMO\Hook\Checker;
 
-use LMO\Hook\File\File;
 use LMO\Hook\File\Files;
 use Symfony\Component\Process\Process;
 
@@ -47,7 +46,7 @@ class PhpCsChecker extends CheckerAbstract
      */
     protected function runPhpCs($files)
     {
-        $command = $this->vendorBinPath . 'phpcs' .
+        $command = $this->vendorBinPaths['composer'] . 'phpcs' .
             ' --report=xml  --standard=' . $this->config['standard'] . ' ';
         $process = new Process(
             $command . implode(' ', $files->getFileNames()),
@@ -55,23 +54,5 @@ class PhpCsChecker extends CheckerAbstract
         );
         $process->run();
         return new \SimpleXMLElement($process->getOutput());
-    }
-
-    /**
-     * @param string $fileName (Absolute path)
-     * @param Files  $files
-     * @return File|bool
-     */
-    protected function findEditedFile($fileName, $files)
-    {
-        $fileName = str_replace('\\', '/', $fileName);
-        foreach ($files as $file) {
-            $name = $file->getName();
-            $isFileFound = strpos($fileName, $name) + strlen($name) === strlen($fileName);
-            if ($isFileFound) {
-                return $file;
-            }
-        }
-        return false;
     }
 }

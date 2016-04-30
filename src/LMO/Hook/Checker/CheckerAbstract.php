@@ -2,13 +2,14 @@
 
 namespace LMO\Hook\Checker;
 
+use LMO\Hook\File\File;
 use LMO\Hook\File\Files;
 
 abstract class CheckerAbstract
 {
     protected $name;
     protected $projectPath = '';
-    protected $vendorBinPath;
+    protected $vendorBinPaths;
     protected $extensions = [];
     protected $config = [];
 
@@ -51,6 +52,24 @@ abstract class CheckerAbstract
     }
 
     /**
+     * @param string $fileName (Absolute path)
+     * @param Files  $files
+     * @return File|bool
+     */
+    protected function findEditedFile($fileName, $files)
+    {
+        $fileName = str_replace('\\', '/', $fileName);
+        foreach ($files as $file) {
+            $name = $file->getName();
+            $isFileFound = strpos($fileName, $name) + strlen($name) === strlen($fileName);
+            if ($isFileFound) {
+                return $file;
+            }
+        }
+        return false;
+    }
+
+    /**
      * @param string $projectPath
      * @return static
      */
@@ -71,11 +90,11 @@ abstract class CheckerAbstract
     }
 
     /**
-     * @param string $vendorBinPath
+     * @param array $vendorBinPaths
      */
-    public function setVendorBinPath($vendorBinPath)
+    public function setVendorBinPaths($vendorBinPaths)
     {
-        $this->vendorBinPath = $vendorBinPath;
+        $this->vendorBinPaths = $vendorBinPaths;
     }
 
     /**
