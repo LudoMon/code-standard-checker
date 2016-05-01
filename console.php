@@ -17,14 +17,6 @@ $config['vendorBinPaths'] = [
 
 $application = new Application();
 $application->add(
-    new \LMO\Hook\Command\PreCommit(
-        $config,
-        [
-            new \LMO\Hook\Checker\PhpLintChecker(),
-            new \LMO\Hook\Checker\ForbiddenWordsChecker(),
-            new \LMO\Hook\Checker\PhpCsChecker(),
-            new \LMO\Hook\Checker\EsLintChecker(),
-        ]
-    )
+    new \LMO\Hook\Command\PreCommit($config)
 );
 $application->run();
