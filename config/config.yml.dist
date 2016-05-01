@@ -1,5 +1,17 @@
-projectPath: src
-forbiddenWordsChecker:
-    pattern: /console\.\([debug|info|log|warn|trace]\)|var_dump\(|var_export\(|print_r\(|\bvd\(|\bvdx\(|\bpr\(|\bprx\(|\bvl\(|\bvlx\(|<<<<<<<|=======|>>>>>>>/
-phpCsChecker:
-    standard: PSR2
+projectPath: ../web-metrics
+checkers:
+    forbiddenWordsChecker:
+        class: LMO\Hook\Checker\ForbiddenWordsChecker
+        enable: true
+        options:
+            pattern: /console\.\([debug|info|log|warn|trace]\)|var_dump\(|var_export\(|print_r\(|\bvd\(|\bvdx\(|\bpr\(|\bprx\(|\bvl\(|\bvlx\(|<<<<<<<|=======|>>>>>>>/
+    phpCsChecker:
+        class: LMO\Hook\Checker\PhpCsChecker
+        enable: true
+        options:
+            standard: PSR2
+    esLintChecker:
+        class: LMO\Hook\Checker\EsLintChecker
+        enabled: true
+        options:
+            standard: config\.eslintrc.json

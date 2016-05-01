@@ -25,19 +25,17 @@ class PreCommit extends Command
     /**
      * @var CheckerAbstract[]
      */
-    private $checkers;
+    private $checkers = [];
 
 
     /**
      * @param array             $config
-     * @param CheckerAbstract[] $checkers
      */
-    public function __construct($config, $checkers)
+    public function __construct($config)
     {
         parent::__construct();
         $this->diffParser = new DiffParser();
         $this->config = $config;
-        $this->checkers = $checkers;
     }
 
     protected function configure()
@@ -48,13 +46,28 @@ class PreCommit extends Command
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->checkers as $checker) {
-            $checkerName = lcfirst($checker->getName());
-            $checker->setProjectPath($this->config['projectPath']);
-            $checker->setVendorBinPaths($this->config['vendorBinPaths']);
-            if (isset($this->config[$checkerName])) {
-                $checker->setConfig($this->config[$checkerName]);
+        foreach ($this->config['checkers'] as $checkerName => $checkerConfig) {
+            if (isset($checkerConfig['enable']) && !$checkerConfig['enable']) {
+                break;
             }
+            if (!class_exists($checkerConfig['class'])) {
+                throw new \InvalidArgumentException(
+                    'Class not found: ' . $checkerConfig['class']
+                );
+            }
+            $checker = new $checkerConfig['class'];
+            if (!($checker instanceof CheckerAbstract)) {
+                throw new \InvalidArgumentException(
+                    'A checker must extend CheckerAbstract'
+                );
+            }
+            $checker->setName(ucfirst($checkerName))
+                ->setProjectPath($this->config['projectPath'])
+                ->setVendorBinPaths($this->config['vendorBinPaths']);
+            if (!empty($checkerConfig['options'])) {
+                $checker->setConfig($checkerConfig['options']);
+            }
+            $this->checkers[] = $checker;
         }
     }
 

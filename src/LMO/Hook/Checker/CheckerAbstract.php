@@ -7,19 +7,15 @@ use LMO\Hook\File\Files;
 
 abstract class CheckerAbstract
 {
-    protected $name;
     protected $projectPath = '';
     protected $vendorBinPaths;
     protected $extensions = [];
     protected $config = [];
 
+    private $name;
+
     public function __construct()
     {
-        if (empty($this->name)) {
-            $namespace = explode('\\', get_class($this));
-            $this->name = end($namespace);
-        }
-
         if (empty($this->extensions)) {
             throw new \Exception(
                 'A checker must care about file extensions'
@@ -40,10 +36,6 @@ abstract class CheckerAbstract
      */
     public function checkFiles($files)
     {
-        if (empty($this->projectPath)) {
-            throw new \Exception('Repository must be set before checking files');
-        }
-
         $filesToCheck = $files->filterByExtensions($this->extensions);
         if ($filesToCheck->count() === 0) {
             return [];
@@ -103,5 +95,15 @@ abstract class CheckerAbstract
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return static
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
     }
 }
