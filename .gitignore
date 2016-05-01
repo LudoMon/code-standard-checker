@@ -2,4 +2,4 @@
 /vendor/
 /node_modules/
 /config/*
-!/config/config.yml.dist
+!/config/*.dist
