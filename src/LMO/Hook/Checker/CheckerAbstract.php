@@ -36,10 +36,6 @@ abstract class CheckerAbstract
      */
     public function checkFiles($files)
     {
-        if (empty($this->projectPath)) {
-            throw new \Exception('Repository must be set before checking files');
-        }
-
         $filesToCheck = $files->filterByExtensions($this->extensions);
         if ($filesToCheck->count() === 0) {
             return [];
