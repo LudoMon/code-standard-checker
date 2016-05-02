@@ -22,7 +22,7 @@ class EsLintChecker extends CheckerAbstract
                 $esLintFile->filePath,
                 $files
             );
-            $editedFileName = pathinfo($editedFile->getName(), PATHINFO_FILENAME);
+            $editedFileName = pathinfo($editedFile->getName(), PATHINFO_BASENAME);
             $editedLines = $editedFile->getEditedLines();
             foreach ($esLintFile->messages as $violation) {
                 if (isset($editedLines[$violation->line])) {
