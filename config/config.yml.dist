@@ -4,7 +4,7 @@ checkers:
         class: LMO\Hook\Checker\ForbiddenWordsChecker
         enable: true
         options:
-            pattern: /console\.\([debug|info|log|warn|trace]\)|var_dump\(|var_export\(|print_r\(|\bvd\(|\bvdx\(|\bpr\(|\bprx\(|\bvl\(|\bvlx\(|<<<<<<<|=======|>>>>>>>/
+            pattern: /console\.(debug|info|log|warn|trace)|var_dump\(|var_export\(|print_r\(|\bvd\(|\bvdx\(|\bpr\(|\bprx\(|\bvl\(|\bvlx\(|<<<<<<<|=======|>>>>>>>/
     phpCsChecker:
         class: LMO\Hook\Checker\PhpCsChecker
         enable: true
