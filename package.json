@@ -13,8 +13,7 @@
   },
   "homepage": "https://gitlab.com/Estelnar/hook#README",
   "dependencies": {
-    "eslint": "^2.8.0",
-    "eslint-config-airbnb": "^8.0.0",
-    "eslint-plugin-import": "^1.6.1"
+    "eslint_d": "^3.1.0",
+    "eslint-config-airbnb": "^8.0.0"
   }
 }

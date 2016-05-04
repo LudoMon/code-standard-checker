@@ -40,7 +40,7 @@ class EsLintChecker extends CheckerAbstract
      */
     protected function runEsLint($files)
     {
-        $command = $this->vendorBinPaths['node'] . 'eslint' .
+        $command = $this->vendorBinPaths['node'] . 'eslint_d' .
             ' --no-eslintrc --format=json  --config ' . $this->config['standard'];
         if (!empty($this->config['ignorePath'])) {
             $command .= ' --ignore-path ' . $this->config['ignorePath'];
