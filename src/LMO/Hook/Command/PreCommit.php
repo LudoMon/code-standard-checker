@@ -62,7 +62,6 @@ class PreCommit extends Command
                 );
             }
             $checker->setName(ucfirst($checkerName))
-                ->setProjectPath($this->config['projectPath'])
                 ->setVendorBinPaths($this->config['vendorBinPaths']);
             if (!empty($checkerConfig['options'])) {
                 $checker->setConfig($checkerConfig['options']);
@@ -132,8 +131,7 @@ class PreCommit extends Command
     private function getEditedFiles()
     {
         $process = new Process(
-            'git diff -U0 --diff-filter=ACMR --cached',
-            $this->config['projectPath']
+            'git diff -U0 --diff-filter=ACMR --cached'
         );
         $process->run();
 

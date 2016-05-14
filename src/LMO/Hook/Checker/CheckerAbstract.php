@@ -7,7 +7,6 @@ use LMO\Hook\File\Files;
 
 abstract class CheckerAbstract
 {
-    protected $projectPath = '';
     protected $vendorBinPaths;
     protected $extensions = [];
     protected $config = [];
@@ -59,16 +58,6 @@ abstract class CheckerAbstract
             }
         }
         return false;
-    }
-
-    /**
-     * @param string $projectPath
-     * @return static
-     */
-    public function setProjectPath($projectPath)
-    {
-        $this->projectPath = $projectPath;
-        return $this;
     }
 
     /**

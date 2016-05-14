@@ -49,8 +49,7 @@ class PhpCsChecker extends CheckerAbstract
         $command = $this->vendorBinPaths['composer'] . 'phpcs' .
             ' --report=xml  --standard=' . $this->config['standard'] . ' ';
         $process = new Process(
-            $command . implode(' ', $files->getFileNames()),
-            $this->projectPath
+            $command . implode(' ', $files->getFileNames())
         );
         $process->run();
         return new \SimpleXMLElement($process->getOutput());

@@ -1,4 +1,3 @@
-projectPath: ../web-metrics
 checkers:
     forbiddenWordsChecker:
         class: LMO\Hook\Checker\ForbiddenWordsChecker

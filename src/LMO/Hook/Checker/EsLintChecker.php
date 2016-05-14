@@ -46,8 +46,7 @@ class EsLintChecker extends CheckerAbstract
             $command .= ' --ignore-path ' . $this->config['ignorePath'];
         }
         $process = new Process(
-            $command . ' ' . implode(' ', $files->getFileNames()),
-            $this->projectPath
+            $command . ' ' . implode(' ', $files->getFileNames())
         );
         $process->run();
         return json_decode($process->getOutput());
