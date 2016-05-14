@@ -69,7 +69,7 @@ class PreCommit extends Command
                 );
             }
             $checker->setName(ucfirst($checkerName))
-                ->setVendorBinPaths($this->vendorDirectories);
+                ->setVendorDirectories($this->vendorDirectories);
             if (!empty($checkerConfig['options'])) {
                 $checker->setConfig($checkerConfig['options']);
             }

@@ -7,7 +7,7 @@ use LMO\Hook\File\Files;
 
 abstract class CheckerAbstract
 {
-    protected $vendorBinPaths;
+    protected $vendorDirectories;
     protected $extensions = [];
     protected $config = [];
 
@@ -71,11 +71,11 @@ abstract class CheckerAbstract
     }
 
     /**
-     * @param array $vendorBinPaths
+     * @param array $vendorDirectories
      */
-    public function setVendorBinPaths($vendorBinPaths)
+    public function setVendorDirectories($vendorDirectories)
     {
-        $this->vendorBinPaths = $vendorBinPaths;
+        $this->vendorDirectories = $vendorDirectories;
     }
 
     /**
