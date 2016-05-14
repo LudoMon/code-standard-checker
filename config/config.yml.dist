@@ -11,6 +11,6 @@ checkers:
             standard: PSR2
     esLintChecker:
         class: LMO\Hook\Checker\EsLintChecker
-        enabled: true
+        enable: true
         options:
             standard: config\.eslintrc.json
