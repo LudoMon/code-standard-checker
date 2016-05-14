@@ -15,7 +15,12 @@ class PreCommit extends Command
     /**
      * @var array
      */
-    private $config;
+    private $checkersConfig;
+
+    /**
+     * @var array
+     */
+    private $vendorDirectories;
 
     /**
      * @var DiffParser
@@ -29,13 +34,15 @@ class PreCommit extends Command
 
 
     /**
-     * @param array             $config
+     * @param string $scriptPath
+     * @param array  $checkersConfig
      */
-    public function __construct($config)
+    public function __construct($scriptPath, $checkersConfig)
     {
         parent::__construct();
         $this->diffParser = new DiffParser();
-        $this->config = $config;
+        $this->checkersConfig = $checkersConfig;
+        $this->initVendorDirectories($scriptPath);
     }
 
     protected function configure()
@@ -46,7 +53,7 @@ class PreCommit extends Command
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->config['checkers'] as $checkerName => $checkerConfig) {
+        foreach ($this->checkersConfig as $checkerName => $checkerConfig) {
             if (isset($checkerConfig['enable']) && !$checkerConfig['enable']) {
                 break;
             }
@@ -62,7 +69,7 @@ class PreCommit extends Command
                 );
             }
             $checker->setName(ucfirst($checkerName))
-                ->setVendorBinPaths($this->config['vendorBinPaths']);
+                ->setVendorBinPaths($this->vendorDirectories);
             if (!empty($checkerConfig['options'])) {
                 $checker->setConfig($checkerConfig['options']);
             }
@@ -138,5 +145,19 @@ class PreCommit extends Command
         return $this->diffParser->parse(
             $process->getOutput()
         );
+    }
+
+    /**
+     * @param string $scriptPath
+     * @return void
+     */
+    private function initVendorDirectories($scriptPath)
+    {
+        $this->vendorDirectories = [
+            'composer' => $scriptPath . DIRECTORY_SEPARATOR .
+                implode(DIRECTORY_SEPARATOR, ['vendor', 'bin']) . DIRECTORY_SEPARATOR,
+            'node' => $scriptPath . DIRECTORY_SEPARATOR .
+                implode(DIRECTORY_SEPARATOR, ['node_modules', '.bin']) . DIRECTORY_SEPARATOR
+        ];
     }
 }
