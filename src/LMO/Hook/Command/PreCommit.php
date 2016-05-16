@@ -12,6 +12,8 @@ use Symfony\Component\Process\Process;
 
 class PreCommit extends Command
 {
+    private $scriptPath;
+
     /**
      * @var array
      */
@@ -42,6 +44,7 @@ class PreCommit extends Command
         parent::__construct();
         $this->diffParser = new DiffParser();
         $this->checkersConfig = $checkersConfig;
+        $this->scriptPath = $scriptPath;
         $this->initVendorDirectories($scriptPath);
     }
 
@@ -69,7 +72,8 @@ class PreCommit extends Command
                 );
             }
             $checker->setName(ucfirst($checkerName))
-                ->setVendorDirectories($this->vendorDirectories);
+                ->setVendorDirectories($this->vendorDirectories)
+                ->setScriptPath($this->scriptPath);
             if (!empty($checkerConfig['options'])) {
                 $checker->setConfig($checkerConfig['options']);
             }

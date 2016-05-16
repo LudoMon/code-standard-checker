@@ -40,6 +40,10 @@ class EsLintChecker extends CheckerAbstract
      */
     protected function runEsLint($files)
     {
+        $standardFile = $this->scriptPath . DIRECTORY_SEPARATOR . $this->config['standard'];
+        if (is_file($standardFile)) {
+            $this->config['standard'] = $standardFile;
+        }
         $command = $this->vendorDirectories['node'] . 'eslint_d' .
             ' --no-eslintrc --format=json  --config ' . $this->config['standard'];
         if (!empty($this->config['ignorePath'])) {
