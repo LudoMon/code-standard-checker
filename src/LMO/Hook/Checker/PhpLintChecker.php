@@ -18,8 +18,7 @@ class PhpLintChecker extends CheckerAbstract
         $errors = [];
         foreach ($files as $file) {
             $process = new Process(
-                'php -l ' . $file->getName(),
-                $this->projectPath
+                'php -l ' . $file->getName()
             );
             $process->run();
             $result = $process->getOutput();

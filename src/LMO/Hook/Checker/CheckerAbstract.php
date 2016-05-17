@@ -7,8 +7,8 @@ use LMO\Hook\File\Files;
 
 abstract class CheckerAbstract
 {
-    protected $projectPath = '';
-    protected $vendorBinPaths;
+    protected $vendorDirectories;
+    protected $scriptPath;
     protected $extensions = [];
     protected $config = [];
 
@@ -62,16 +62,6 @@ abstract class CheckerAbstract
     }
 
     /**
-     * @param string $projectPath
-     * @return static
-     */
-    public function setProjectPath($projectPath)
-    {
-        $this->projectPath = $projectPath;
-        return $this;
-    }
-
-    /**
      * @param array $config
      * @return static
      */
@@ -82,11 +72,13 @@ abstract class CheckerAbstract
     }
 
     /**
-     * @param array $vendorBinPaths
+     * @param array $vendorDirectories
+     * @return static
      */
-    public function setVendorBinPaths($vendorBinPaths)
+    public function setVendorDirectories($vendorDirectories)
     {
-        $this->vendorBinPaths = $vendorBinPaths;
+        $this->vendorDirectories = $vendorDirectories;
+        return $this;
     }
 
     /**
@@ -104,6 +96,16 @@ abstract class CheckerAbstract
     public function setName($name)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @param string $scriptPath
+     * @return static
+     */
+    public function setScriptPath($scriptPath)
+    {
+        $this->scriptPath = $scriptPath;
         return $this;
     }
 }

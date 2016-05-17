@@ -46,11 +46,14 @@ class PhpCsChecker extends CheckerAbstract
      */
     protected function runPhpCs($files)
     {
-        $command = $this->vendorBinPaths['composer'] . 'phpcs' .
+        $standardFile = $this->scriptPath . DIRECTORY_SEPARATOR . $this->config['standard'];
+        if (is_file($standardFile)) {
+            $this->config['standard'] = $standardFile;
+        }
+        $command = $this->vendorDirectories['composer'] . 'phpcs' .
             ' --report=xml  --standard=' . $this->config['standard'] . ' ';
         $process = new Process(
-            $command . implode(' ', $files->getFileNames()),
-            $this->projectPath
+            $command . implode(' ', $files->getFileNames())
         );
         $process->run();
         return new \SimpleXMLElement($process->getOutput());
