@@ -40,19 +40,25 @@ class EsLintChecker extends CheckerAbstract
      */
     protected function runEsLint($files)
     {
+        $results = [];
         $standardFile = $this->scriptPath . DIRECTORY_SEPARATOR . $this->config['standard'];
         if (is_file($standardFile)) {
             $this->config['standard'] = $standardFile;
         }
         $command = $this->vendorDirectories['node'] . 'eslint_d' .
-            ' --no-eslintrc --format=json  --config ' . $this->config['standard'];
-        if (!empty($this->config['ignorePath'])) {
-            $command .= ' --ignore-path ' . $this->config['ignorePath'];
+            ' --no-eslintrc --format=json  --config ' . $this->config['standard'] .
+            ' --stdin --stdin-filename=';
+        foreach ($files as $file) {
+            $fileName = $file->getName();
+            $process = new Process(
+                'git show :' . $fileName . ' | ' . $command . $fileName
+            );
+            $process->run();
+            $fileViolations = json_decode($process->getOutput());
+            if (!empty($fileViolations[0])) {
+                $results[] = $fileViolations[0];
+            }
         }
-        $process = new Process(
-            $command . ' ' . implode(' ', $files->getFileNames())
-        );
-        $process->run();
-        return json_decode($process->getOutput());
+        return $results;
     }
 }
