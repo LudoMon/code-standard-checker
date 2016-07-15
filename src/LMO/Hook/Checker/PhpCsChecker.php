@@ -17,12 +17,12 @@ class PhpCsChecker extends CheckerAbstract
     {
         $phpCsResult = $this->runPhpCs($files);
         $errorMessages = [];
-        foreach ($phpCsResult->file as $phpCsFile) {
+        foreach ($phpCsResult as $fileName => $phpCsFile) {
             $editedFile = $this->findEditedFile(
-                (string) $phpCsFile['name'],
+                (string) $fileName,
                 $files
             );
-            $editedFileName = pathinfo($editedFile->getName(), PATHINFO_FILENAME);
+            $editedFileName = pathinfo($editedFile->getName(), PATHINFO_BASENAME);
             $editedLines = $editedFile->getEditedLines();
             foreach ($phpCsFile->warning as $warning) {
                 if (isset($editedLines[(int) $warning['line']])) {
@@ -46,16 +46,23 @@ class PhpCsChecker extends CheckerAbstract
      */
     protected function runPhpCs($files)
     {
+        $results = [];
         $standardFile = $this->scriptPath . DIRECTORY_SEPARATOR . $this->config['standard'];
         if (is_file($standardFile) || is_dir($standardFile)) {
             $this->config['standard'] = $standardFile;
         }
         $command = $this->vendorDirectories['composer'] . 'phpcs' .
-            ' --report=xml  --standard=' . $this->config['standard'] . ' ';
-        $process = new Process(
-            $command . implode(' ', $files->getFileNames())
-        );
-        $process->run();
-        return new \SimpleXMLElement($process->getOutput());
+            ' --report=xml  --standard=' . $this->config['standard'];
+        foreach ($files as $file) {
+            $process = new Process(
+                'git show :' . $file->getName() . ' | ' . $command
+            );
+            $process->run();
+            $fileViolations = new \SimpleXMLElement($process->getOutput());
+            if (!empty($fileViolations->file)) {
+                $results[$file->getName()] = $fileViolations->file;
+            }
+        }
+        return $results;
     }
 }
