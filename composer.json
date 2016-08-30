@@ -1,5 +1,5 @@
 {
-    "name": "estelnar/hook",
+    "name": "ludomon/code-standard-checker",
     "description": "Perform automated code quality checks before commit",
     "require": {
         "squizlabs/php_codesniffer": "^2.6",
@@ -9,7 +9,7 @@
     },
     "authors": [
         {
-            "name": "Estelnar",
+            "name": "LudoMon",
             "email": "ludo.zegeek@gmail.com"
         }
     ],
