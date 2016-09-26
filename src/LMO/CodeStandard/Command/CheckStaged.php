@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
-class PreCommit extends Command
+class CheckStaged extends Command
 {
     private $scriptPath;
 
@@ -50,8 +50,8 @@ class PreCommit extends Command
 
     protected function configure()
     {
-        $this->setName('hook:pre-commit')
-            ->setDescription('Git pre-commit hook');
+        $this->setName('code-standard:check:staged')
+            ->setDescription('Check Git staged changes violations');
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
