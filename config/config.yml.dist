@@ -1,16 +1,16 @@
 checkers:
     forbiddenWordsChecker:
-        class: LMO\Hook\Checker\ForbiddenWordsChecker
+        class: LMO\CodeStandard\Checker\ForbiddenWordsChecker
         enable: true
         options:
             pattern: /console\.(debug|info|log|warn|trace)|var_dump\(|var_export\(|print_r\(|\bvd\(|\bvdx\(|\bpr\(|\bprx\(|\bvl\(|\bvlx\(|<<<<<<<|=======|>>>>>>>/
     phpCsChecker:
-        class: LMO\Hook\Checker\PhpCsChecker
+        class: LMO\CodeStandard\Checker\PhpCsChecker
         enable: true
         options:
             standard: PSR2
     esLintChecker:
-        class: LMO\Hook\Checker\EsLintChecker
+        class: LMO\CodeStandard\Checker\EsLintChecker
         enable: true
         options:
             standard: config\.eslintrc.json

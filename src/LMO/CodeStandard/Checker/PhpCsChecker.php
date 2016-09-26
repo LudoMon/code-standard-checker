@@ -1,8 +1,8 @@
 <?php
 
-namespace LMO\Hook\Checker;
+namespace LMO\CodeStandard\Checker;
 
-use LMO\Hook\File\Files;
+use LMO\CodeStandard\File\Files;
 use Symfony\Component\Process\Process;
 
 class PhpCsChecker extends CheckerAbstract

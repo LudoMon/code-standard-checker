@@ -1,6 +1,6 @@
 <?php
 
-namespace LMO\Hook\File;
+namespace LMO\CodeStandard\File;
 
 class File
 {

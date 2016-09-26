@@ -1,10 +1,10 @@
 <?php
 
-namespace LMO\Hook\Command;
+namespace LMO\CodeStandard\Command;
 
-use LMO\Hook\Checker\CheckerAbstract;
-use LMO\Hook\DiffParser;
-use LMO\Hook\File\Files;
+use LMO\CodeStandard\Checker\CheckerAbstract;
+use LMO\CodeStandard\DiffParser;
+use LMO\CodeStandard\File\Files;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;

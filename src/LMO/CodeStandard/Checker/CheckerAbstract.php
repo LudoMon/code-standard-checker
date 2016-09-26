@@ -1,9 +1,9 @@
 <?php
 
-namespace LMO\Hook\Checker;
+namespace LMO\CodeStandard\Checker;
 
-use LMO\Hook\File\File;
-use LMO\Hook\File\Files;
+use LMO\CodeStandard\File\File;
+use LMO\CodeStandard\File\Files;
 
 abstract class CheckerAbstract
 {

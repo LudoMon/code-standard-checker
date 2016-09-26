@@ -1,8 +1,8 @@
 <?php
 
-namespace LMO\Hook;
+namespace LMO\CodeStandard;
 
-use LMO\Hook\File;
+use LMO\CodeStandard\File;
 
 class DiffParser
 {
