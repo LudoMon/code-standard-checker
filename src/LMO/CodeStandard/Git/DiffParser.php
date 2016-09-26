@@ -1,6 +1,6 @@
 <?php
 
-namespace LMO\CodeStandard;
+namespace LMO\CodeStandard\Git;
 
 use LMO\CodeStandard\File;
 

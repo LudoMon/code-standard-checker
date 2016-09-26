@@ -3,7 +3,7 @@
 namespace LMO\CodeStandard\Command;
 
 use LMO\CodeStandard\Checker\CheckerAbstract;
-use LMO\CodeStandard\DiffParser;
+use LMO\CodeStandard\Git\DiffParser;
 use LMO\CodeStandard\File\Files;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
