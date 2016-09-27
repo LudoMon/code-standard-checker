@@ -17,7 +17,7 @@ class CheckStaged extends Command
     /**
      * @var array
      */
-    private $checkersConfig;
+    private $standardsConfig;
 
     /**
      * @var array
@@ -30,20 +30,20 @@ class CheckStaged extends Command
     private $diffParser;
 
     /**
-     * @var CheckerAbstract[]
+     * @var CheckerAbstract[][]
      */
     private $checkers = [];
 
 
     /**
      * @param string $scriptPath
-     * @param array  $checkersConfig
+     * @param array  $standardsConfig
      */
-    public function __construct($scriptPath, $checkersConfig)
+    public function __construct($scriptPath, $standardsConfig)
     {
         parent::__construct();
         $this->diffParser = new DiffParser();
-        $this->checkersConfig = $checkersConfig;
+        $this->standardsConfig = $standardsConfig;
         $this->scriptPath = $scriptPath;
         $this->initVendorDirectories($scriptPath);
     }
@@ -56,28 +56,27 @@ class CheckStaged extends Command
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->checkersConfig as $checkerName => $checkerConfig) {
-            if (isset($checkerConfig['enable']) && !$checkerConfig['enable']) {
-                break;
+        foreach ($this->standardsConfig as $standardName => $standard) {
+            foreach ($standard['checkers'] as $checkerName => $checkerConfig) {
+                if (!class_exists($checkerConfig['class'])) {
+                    throw new \InvalidArgumentException(
+                        'Class not found: ' . $checkerConfig['class']
+                    );
+                }
+                $checker = new $checkerConfig['class'];
+                if (!($checker instanceof CheckerAbstract)) {
+                    throw new \InvalidArgumentException(
+                        'A checker must extend CheckerAbstract'
+                    );
+                }
+                $checker->setName(ucfirst($checkerName))
+                    ->setVendorDirectories($this->vendorDirectories)
+                    ->setScriptPath($this->scriptPath);
+                if (!empty($checkerConfig['options'])) {
+                    $checker->setConfig($checkerConfig['options']);
+                }
+                $this->checkers[$standardName][] = $checker;
             }
-            if (!class_exists($checkerConfig['class'])) {
-                throw new \InvalidArgumentException(
-                    'Class not found: ' . $checkerConfig['class']
-                );
-            }
-            $checker = new $checkerConfig['class'];
-            if (!($checker instanceof CheckerAbstract)) {
-                throw new \InvalidArgumentException(
-                    'A checker must extend CheckerAbstract'
-                );
-            }
-            $checker->setName(ucfirst($checkerName))
-                ->setVendorDirectories($this->vendorDirectories)
-                ->setScriptPath($this->scriptPath);
-            if (!empty($checkerConfig['options'])) {
-                $checker->setConfig($checkerConfig['options']);
-            }
-            $this->checkers[] = $checker;
         }
     }
 
@@ -85,18 +84,21 @@ class CheckStaged extends Command
     {
         $hasError = false;
         $this->printStartMessage($output);
-        $editedFiles = $this->getEditedFiles();
-        foreach ($this->checkers as $checker) {
-            $errorMessages = $checker->checkFiles($editedFiles);
-            if (!empty($errorMessages)) {
-                $hasError = true;
-                $output->writeln('');
-                $output->writeln(
-                    '<bg=yellow;fg=black>' .
-                    $checker->getName() . ' found the following errors</>'
-                );
-                foreach ($errorMessages as $errorMessage) {
-                    $output->writeln($errorMessage);
+        $editedFiles = $this->getEditedFiles()
+            ->groupByStandard($this->standardsConfig);
+        foreach ($editedFiles as $standardName => $files) {
+            foreach ($this->checkers[$standardName] as $checker) {
+                $errorMessages = $checker->checkFiles($files);
+                if (!empty($errorMessages)) {
+                    $hasError = true;
+                    $output->writeln('');
+                    $output->writeln(
+                        '<bg=yellow;fg=black>' .
+                        $checker->getName() . ' found the following errors</>'
+                    );
+                    foreach ($errorMessages as $errorMessage) {
+                        $output->writeln($errorMessage);
+                    }
                 }
             }
         }

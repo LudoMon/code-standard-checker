@@ -110,6 +110,34 @@ class Files implements \Iterator
     }
 
     /**
+     * @param array $standards
+     * @return self[]
+     */
+    public function groupByStandard($standards)
+    {
+        $secondaryStandards = $standards;
+        unset($secondaryStandards['main']);
+
+        $files = [];
+        foreach ($this->files as $file) {
+            $standardFound = false;
+            foreach ($secondaryStandards as $standardName => $standard) {
+                if (strpos($file->getName(), $standard['folder']) === 0) {
+                    $files[$standardName] = $files[$standardName] ?? new Files();
+                    $files[$standardName]->push($file);
+                    $standardFound = true;
+                    break;
+                }
+            }
+            if (!$standardFound) {
+                $files['main'] = $files['main'] ?? new Files();
+                $files['main']->push($file);
+            }
+        }
+        return $files;
+    }
+
+    /**
      * @param string $fileName
      * @return bool|File
      */
