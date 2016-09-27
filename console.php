@@ -11,6 +11,6 @@ $config = \Symfony\Component\Yaml\Yaml::parse(
 
 $application = new Application();
 $application->add(
-    new \LMO\CodeStandard\Command\CheckStaged(__DIR__, $config['checkers'])
+    new \LMO\CodeStandard\Command\CheckStagedCommand(__DIR__, $config['checkers'])
 );
 $application->run();
