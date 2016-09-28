@@ -7,8 +7,10 @@ use LMO\CodeStandard\Git\DiffParser;
 use LMO\CodeStandard\File\Files;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
+use Symfony\Component\Yaml\Yaml;
 
 class CheckStagedCommand extends Command
 {
@@ -37,47 +39,46 @@ class CheckStagedCommand extends Command
 
     /**
      * @param string $scriptPath
-     * @param array  $standardsConfig
      */
-    public function __construct($scriptPath, $standardsConfig)
+    public function __construct($scriptPath)
     {
-        parent::__construct();
         $this->diffParser = new DiffParser();
-        $this->standardsConfig = $standardsConfig;
         $this->scriptPath = $scriptPath;
         $this->initVendorDirectories($scriptPath);
+        parent::__construct();
     }
 
     protected function configure()
     {
         $this->setName('code-standard:check:staged')
-            ->setDescription('Check Git staged changes violations');
+            ->setDescription('Check Git staged changes violations')
+            ->addOption(
+                'standards-config',
+                's',
+                InputOption::VALUE_REQUIRED,
+                'Standards description file path',
+                $this->scriptPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.yml'
+            );
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        foreach ($this->standardsConfig as $standardName => $standard) {
-            foreach ($standard['checkers'] as $checkerName => $checkerConfig) {
-                if (!class_exists($checkerConfig['class'])) {
-                    throw new \InvalidArgumentException(
-                        'Class not found: ' . $checkerConfig['class']
-                    );
-                }
-                $checker = new $checkerConfig['class'];
-                if (!($checker instanceof CheckerAbstract)) {
-                    throw new \InvalidArgumentException(
-                        'A checker must extend CheckerAbstract'
-                    );
-                }
-                $checker->setName(ucfirst($checkerName))
-                    ->setVendorDirectories($this->vendorDirectories)
-                    ->setScriptPath($this->scriptPath);
-                if (!empty($checkerConfig['options'])) {
-                    $checker->setConfig($checkerConfig['options']);
-                }
-                $this->checkers[$standardName][] = $checker;
-            }
+        $standardsFile = $input->getOption('standards-config');
+        if (!file_exists($standardsFile) &&
+            file_exists(getcwd() . DIRECTORY_SEPARATOR . $standardsFile)
+        ) {
+            $standardsFile = getcwd() . DIRECTORY_SEPARATOR . $standardsFile;
         }
+        if (!file_exists($standardsFile)) {
+            throw new \InvalidArgumentException(
+                'Project standards description file not found (' . $standardsFile . ')'
+            );
+        }
+        $this->standardsConfig = Yaml::parse(
+            file_get_contents($standardsFile)
+        );
+
+        $this->instantiateCheckers(dirname($standardsFile));
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -135,6 +136,38 @@ class CheckStagedCommand extends Command
             $output->writeln('<error>       COMMIT REJECTED       </error>');
             $output->writeln('<error>   (git commit --no-verify)  </error>');
             $output->writeln('<error>                             </error>');
+        }
+    }
+
+    /**
+     * @param string $configPath
+     *
+     * @return void
+     */
+    private function instantiateCheckers($configPath)
+    {
+        foreach ($this->standardsConfig as $standardName => $standard) {
+            foreach ($standard['checkers'] as $checkerName => $checkerConfig) {
+                if (!class_exists($checkerConfig['class'])) {
+                    throw new \InvalidArgumentException(
+                        'Class not found: ' . $checkerConfig['class']
+                    );
+                }
+                $checker = new $checkerConfig['class'];
+                if (!($checker instanceof CheckerAbstract)) {
+                    throw new \InvalidArgumentException(
+                        'A checker must extend CheckerAbstract'
+                    );
+                }
+                $checker->setName(ucfirst($checkerName))
+                    ->setVendorDirectories($this->vendorDirectories)
+                    ->setScriptPath($this->scriptPath)
+                    ->setConfigPath($configPath);
+                if (!empty($checkerConfig['options'])) {
+                    $checker->setConfig($checkerConfig['options']);
+                }
+                $this->checkers[$standardName][] = $checker;
+            }
         }
     }
 

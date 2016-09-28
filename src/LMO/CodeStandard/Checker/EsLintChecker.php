@@ -16,6 +16,7 @@ class EsLintChecker extends CheckerAbstract
     protected function getErrors($files)
     {
         $errorMessages = [];
+        $this->checkConfigFile('standard', 'EsLint standard file not found');
         $esLintResults = $this->runEsLint($files);
         foreach ($esLintResults as $esLintFile) {
             $editedFile = $this->findEditedFile(
@@ -41,10 +42,6 @@ class EsLintChecker extends CheckerAbstract
     protected function runEsLint($files)
     {
         $results = [];
-        $standardFile = $this->scriptPath . DIRECTORY_SEPARATOR . $this->config['standard'];
-        if (is_file($standardFile)) {
-            $this->config['standard'] = $standardFile;
-        }
         $command = $this->vendorDirectories['node'] . 'eslint_d' .
             ' --no-eslintrc --format=json  --config ' . $this->config['standard'] .
             ' --stdin --stdin-filename=';

@@ -1,15 +1,14 @@
-standards:
-    main:
-        checkers:
-            forbiddenWordsChecker:
-                class: LMO\CodeStandard\Checker\ForbiddenWordsChecker
-                options:
-                    pattern: /console\.(debug|info|log|warn|trace)|var_dump\(|var_export\(|print_r\(|\bvd\(|\bvdx\(|\bpr\(|\bprx\(|\bvl\(|\bvlx\(|<<<<<<<|=======|>>>>>>>/
-            phpCsChecker:
-                class: LMO\CodeStandard\Checker\PhpCsChecker
-                options:
-                    standard: PSR2
-            esLintChecker:
-                class: LMO\CodeStandard\Checker\EsLintChecker
-                options:
-                    standard: config\.eslintrc.json
+main:
+    checkers:
+        forbiddenWordsChecker:
+            class: LMO\CodeStandard\Checker\ForbiddenWordsChecker
+            options:
+                pattern: /console\.(debug|info|log|warn|trace)|var_dump\(|var_export\(|print_r\(|\bvd\(|\bvdx\(|\bpr\(|\bprx\(|\bvl\(|\bvlx\(|<<<<<<<|=======|>>>>>>>/
+        phpCsChecker:
+            class: LMO\CodeStandard\Checker\PhpCsChecker
+            options:
+                standard: PSR2
+        esLintChecker:
+            class: LMO\CodeStandard\Checker\EsLintChecker
+            options:
+                standard: config\.eslintrc.json

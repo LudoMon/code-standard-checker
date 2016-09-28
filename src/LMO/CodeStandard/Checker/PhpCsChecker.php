@@ -15,6 +15,7 @@ class PhpCsChecker extends CheckerAbstract
      */
     protected function getErrors($files)
     {
+        $this->checkConfigFile('standard');
         $phpCsResult = $this->runPhpCs($files);
         $errorMessages = [];
         foreach ($phpCsResult as $fileName => $phpCsFile) {
@@ -42,15 +43,11 @@ class PhpCsChecker extends CheckerAbstract
 
     /**
      * @param Files $files
-     * @return \SimpleXMLElement
+     * @return \SimpleXMLElement[]
      */
     protected function runPhpCs($files)
     {
         $results = [];
-        $standardFile = $this->scriptPath . DIRECTORY_SEPARATOR . $this->config['standard'];
-        if (is_file($standardFile) || is_dir($standardFile)) {
-            $this->config['standard'] = $standardFile;
-        }
         $command = $this->vendorDirectories['composer'] . 'phpcs' .
             ' --report=xml  --standard=' . $this->config['standard'];
         foreach ($files as $file) {

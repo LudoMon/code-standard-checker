@@ -9,6 +9,7 @@ abstract class CheckerAbstract
 {
     protected $vendorDirectories;
     protected $scriptPath;
+    protected $configPath;
     protected $extensions = [];
     protected $config = [];
 
@@ -72,6 +73,24 @@ abstract class CheckerAbstract
     }
 
     /**
+     * @param string $configKey
+     * @param string $errorMessage
+     */
+    protected function checkConfigFile($configKey, $errorMessage = '')
+    {
+        if (!file_exists($this->config[$configKey]) &&
+            file_exists($this->configPath . DIRECTORY_SEPARATOR . $this->config[$configKey])
+        ) {
+            $this->config[$configKey] = $this->configPath . DIRECTORY_SEPARATOR . $this->config[$configKey];
+        }
+        if ($errorMessage && !file_exists($this->config[$configKey])) {
+            throw new \InvalidArgumentException(
+                $errorMessage . ' (' . $this->config[$configKey] . ')'
+            );
+        }
+    }
+
+    /**
      * @param array $vendorDirectories
      * @return static
      */
@@ -106,6 +125,16 @@ abstract class CheckerAbstract
     public function setScriptPath($scriptPath)
     {
         $this->scriptPath = $scriptPath;
+        return $this;
+    }
+
+    /**
+     * @param string $configPath
+     * @return static
+     */
+    public function setConfigPath($configPath)
+    {
+        $this->configPath = $configPath;
         return $this;
     }
 }
