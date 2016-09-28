@@ -57,7 +57,7 @@ class CheckStagedCommand extends Command
                 's',
                 InputOption::VALUE_REQUIRED,
                 'Standards description file path',
-                $this->scriptPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.yml'
+                $this->scriptPath . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'standards.yml'
             );
     }
 
