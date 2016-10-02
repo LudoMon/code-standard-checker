@@ -3,7 +3,7 @@
 namespace LMO\CodeStandard\Checker;
 
 use LMO\CodeStandard\FileSystem\EditedFile;
-use LMO\CodeStandard\File\Files;
+use LMO\CodeStandard\FileSystem\Files;
 
 abstract class CheckerAbstract
 {

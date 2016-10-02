@@ -2,18 +2,18 @@
 
 namespace LMO\CodeStandard\Git;
 
-use LMO\CodeStandard\File;
 use LMO\CodeStandard\FileSystem\EditedFile;
+use LMO\CodeStandard\FileSystem\Files;
 
 class DiffParser
 {
     /**
      * @param string $diff
-     * @return File\Files Edited files
+     * @return Files Edited files
      */
     public function parse($diff)
     {
-        $editedFiles = new File\Files();
+        $editedFiles = new Files();
         $filesDiff = explode('+++ b/', $diff);
         array_shift($filesDiff);
         foreach ($filesDiff as $fileDiff) {

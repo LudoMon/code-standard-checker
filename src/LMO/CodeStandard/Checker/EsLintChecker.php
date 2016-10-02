@@ -2,7 +2,7 @@
 
 namespace LMO\CodeStandard\Checker;
 
-use LMO\CodeStandard\File\Files;
+use LMO\CodeStandard\FileSystem\Files;
 use Symfony\Component\Process\Process;
 
 class EsLintChecker extends CheckerAbstract

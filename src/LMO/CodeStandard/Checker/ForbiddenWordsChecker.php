@@ -2,7 +2,7 @@
 
 namespace LMO\CodeStandard\Checker;
 
-use LMO\CodeStandard\File\Files;
+use LMO\CodeStandard\FileSystem\Files;
 
 class ForbiddenWordsChecker extends CheckerAbstract
 {

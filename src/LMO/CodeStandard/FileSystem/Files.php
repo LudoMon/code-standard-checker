@@ -1,8 +1,6 @@
 <?php
 
-namespace LMO\CodeStandard\File;
-
-use LMO\CodeStandard\FileSystem\EditedFile;
+namespace LMO\CodeStandard\FileSystem;
 
 class Files implements \Iterator
 {
