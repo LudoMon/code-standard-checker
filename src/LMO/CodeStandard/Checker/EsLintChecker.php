@@ -19,9 +19,9 @@ class EsLintChecker extends CheckerAbstract
         $this->checkConfigFile('standard', 'EsLint standard file not found');
         $esLintResults = $this->runEsLint($files);
         foreach ($esLintResults as $esLintFile) {
-            $editedFile = $this->findEditedFile(
-                $esLintFile->filePath,
-                $files
+            $editedFile = $this->fileManager->findFileByName(
+                $files,
+                $esLintFile->filePath
             );
             $editedFileName = pathinfo($editedFile->getName(), PATHINFO_BASENAME);
             $editedLines = $editedFile->getEditedLines();

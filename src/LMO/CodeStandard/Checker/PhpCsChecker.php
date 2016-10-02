@@ -19,9 +19,9 @@ class PhpCsChecker extends CheckerAbstract
         $phpCsResult = $this->runPhpCs($files);
         $errorMessages = [];
         foreach ($phpCsResult as $fileName => $phpCsFile) {
-            $editedFile = $this->findEditedFile(
-                (string) $fileName,
-                $files
+            $editedFile = $this->fileManager->findFileByName(
+                $files,
+                (string) $fileName
             );
             $editedFileName = pathinfo($editedFile->getName(), PATHINFO_BASENAME);
             $editedLines = $editedFile->getEditedLines();

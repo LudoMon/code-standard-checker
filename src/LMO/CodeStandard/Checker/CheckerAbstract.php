@@ -58,24 +58,6 @@ abstract class CheckerAbstract
     }
 
     /**
-     * @param string       $fileName (Absolute path)
-     * @param EditedFile[] $files
-     * @return EditedFile|bool
-     */
-    protected function findEditedFile($fileName, $files)
-    {
-        $fileName = str_replace('\\', '/', $fileName);
-        foreach ($files as $file) {
-            $name = $file->getName();
-            $isFileFound = strpos($fileName, $name) + strlen($name) === strlen($fileName);
-            if ($isFileFound) {
-                return $file;
-            }
-        }
-        return false;
-    }
-
-    /**
      * @param array $config
      * @return static
      */
