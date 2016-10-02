@@ -88,6 +88,9 @@ class CheckStagedCommand extends Command
         $editedFiles = $this->getEditedFiles()
             ->groupByStandard($this->standardsConfig);
         foreach ($editedFiles as $standardName => $files) {
+            if (empty($this->checkers[$standardName])) {
+                continue;
+            }
             foreach ($this->checkers[$standardName] as $checker) {
                 $errorMessages = $checker->checkFiles($files);
                 if (!empty($errorMessages)) {
@@ -147,6 +150,9 @@ class CheckStagedCommand extends Command
     private function instantiateCheckers($configPath)
     {
         foreach ($this->standardsConfig as $standardName => $standard) {
+            if (empty($standard['checkers'])) {
+                continue;
+            }
             foreach ($standard['checkers'] as $checkerName => $checkerConfig) {
                 if (!class_exists($checkerConfig['class'])) {
                     throw new \InvalidArgumentException(
