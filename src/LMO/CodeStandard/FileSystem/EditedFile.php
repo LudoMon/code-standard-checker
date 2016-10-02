@@ -1,8 +1,8 @@
 <?php
 
-namespace LMO\CodeStandard\File;
+namespace LMO\CodeStandard\FileSystem;
 
-class File
+class EditedFile
 {
     protected $path;
     protected $extension;

@@ -2,12 +2,14 @@
 
 namespace LMO\CodeStandard\File;
 
+use LMO\CodeStandard\FileSystem\EditedFile;
+
 class Files implements \Iterator
 {
 
     private $index = 0;
     /**
-     * @var File[]
+     * @var EditedFile[]
      */
     private $files = [];
 
@@ -68,7 +70,7 @@ class Files implements \Iterator
     }
 
     /**
-     * @param File $file
+     * @param EditedFile $file
      * return void
      */
     public function push($file)
@@ -139,7 +141,7 @@ class Files implements \Iterator
 
     /**
      * @param string $fileName
-     * @return bool|File
+     * @return bool|EditedFile
      */
     public function getFile($fileName)
     {

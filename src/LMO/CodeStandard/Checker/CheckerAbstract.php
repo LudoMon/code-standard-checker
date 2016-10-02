@@ -2,7 +2,7 @@
 
 namespace LMO\CodeStandard\Checker;
 
-use LMO\CodeStandard\File\File;
+use LMO\CodeStandard\FileSystem\EditedFile;
 use LMO\CodeStandard\File\Files;
 
 abstract class CheckerAbstract
@@ -47,7 +47,7 @@ abstract class CheckerAbstract
     /**
      * @param string $fileName (Absolute path)
      * @param Files  $files
-     * @return File|bool
+     * @return EditedFile|bool
      */
     protected function findEditedFile($fileName, $files)
     {

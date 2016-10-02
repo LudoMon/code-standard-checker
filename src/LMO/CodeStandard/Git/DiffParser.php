@@ -3,6 +3,7 @@
 namespace LMO\CodeStandard\Git;
 
 use LMO\CodeStandard\File;
+use LMO\CodeStandard\FileSystem\EditedFile;
 
 class DiffParser
 {
@@ -18,7 +19,7 @@ class DiffParser
         foreach ($filesDiff as $fileDiff) {
             $fileChanges = explode("\n@@", $fileDiff);
             $fileName = trim(array_shift($fileChanges));
-            $file = new File\File($fileName);
+            $file = new EditedFile($fileName);
             foreach ($fileChanges as $fileChange) {
                 preg_match('/\+([0-9]+)(,[0-9]+)? @@/', $fileChange, $matches);
                 $changeStartLine = intval($matches[1]);
