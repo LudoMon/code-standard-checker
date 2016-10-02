@@ -2,7 +2,7 @@
 
 namespace LMO\CodeStandard\Checker;
 
-use LMO\CodeStandard\FileSystem\Files;
+use LMO\CodeStandard\FileSystem\EditedFile;
 
 class ForbiddenWordsChecker extends CheckerAbstract
 {
@@ -12,7 +12,7 @@ class ForbiddenWordsChecker extends CheckerAbstract
     ];
 
     /**
-     * @param Files $files
+     * @param EditedFile[] $files
      * @return array An array of error messages
      */
     protected function getErrors($files)

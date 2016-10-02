@@ -4,7 +4,8 @@ namespace LMO\CodeStandard\Command;
 
 use LMO\CodeStandard\Checker\CheckerAbstract;
 use LMO\CodeStandard\Git\DiffParser;
-use LMO\CodeStandard\FileSystem\Files;
+use LMO\CodeStandard\FileSystem\EditedFile;
+use LMO\CodeStandard\FileSystem\FileManager;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -32,6 +33,11 @@ class CheckStagedCommand extends Command
     private $diffParser;
 
     /**
+     * @var FileManager
+     */
+    private $fileManager;
+
+    /**
      * @var CheckerAbstract[][]
      */
     private $checkers = [];
@@ -43,6 +49,7 @@ class CheckStagedCommand extends Command
     public function __construct($scriptPath)
     {
         $this->diffParser = new DiffParser();
+        $this->fileManager = new  FileManager();
         $this->scriptPath = $scriptPath;
         $this->initVendorDirectories($scriptPath);
         parent::__construct();
@@ -85,8 +92,7 @@ class CheckStagedCommand extends Command
     {
         $hasError = false;
         $this->printStartMessage($output);
-        $editedFiles = $this->getEditedFiles()
-            ->groupByStandard($this->standardsConfig);
+        $editedFiles = $this->getEditedFiles();
         foreach ($editedFiles as $standardName => $files) {
             if (empty($this->checkers[$standardName])) {
                 continue;
@@ -159,7 +165,7 @@ class CheckStagedCommand extends Command
                         'Class not found: ' . $checkerConfig['class']
                     );
                 }
-                $checker = new $checkerConfig['class'];
+                $checker = new $checkerConfig['class']($this->fileManager);
                 if (!($checker instanceof CheckerAbstract)) {
                     throw new \InvalidArgumentException(
                         'A checker must extend CheckerAbstract'
@@ -178,7 +184,7 @@ class CheckStagedCommand extends Command
     }
 
     /**
-     * @return Files
+     * @return EditedFile[][] Edited files, grouped by standard
      */
     private function getEditedFiles()
     {
@@ -187,8 +193,13 @@ class CheckStagedCommand extends Command
         );
         $process->run();
 
-        return $this->diffParser->parse(
+        $editedFiles = $this->diffParser->parse(
             $process->getOutput()
+        );
+
+        return $this->fileManager->groupFilesByStandard(
+            $editedFiles,
+            $this->standardsConfig
         );
     }
 

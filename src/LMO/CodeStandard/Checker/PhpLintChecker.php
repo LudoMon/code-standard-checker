@@ -2,7 +2,7 @@
 
 namespace LMO\CodeStandard\Checker;
 
-use LMO\CodeStandard\FileSystem\Files;
+use LMO\CodeStandard\FileSystem\EditedFile;
 use Symfony\Component\Process\Process;
 
 class PhpLintChecker extends CheckerAbstract
@@ -10,7 +10,7 @@ class PhpLintChecker extends CheckerAbstract
     protected $extensions = ['php' => true];
 
     /**
-     * @param Files $files
+     * @param EditedFile[] $files
      * @return array An array of error messages
      */
     protected function getErrors($files)

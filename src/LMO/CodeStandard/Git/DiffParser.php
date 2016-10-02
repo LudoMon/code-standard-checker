@@ -3,17 +3,16 @@
 namespace LMO\CodeStandard\Git;
 
 use LMO\CodeStandard\FileSystem\EditedFile;
-use LMO\CodeStandard\FileSystem\Files;
 
 class DiffParser
 {
     /**
      * @param string $diff
-     * @return Files Edited files
+     * @return EditedFile[]
      */
     public function parse($diff)
     {
-        $editedFiles = new Files();
+        $editedFiles = [];
         $filesDiff = explode('+++ b/', $diff);
         array_shift($filesDiff);
         foreach ($filesDiff as $fileDiff) {
@@ -37,7 +36,7 @@ class DiffParser
                     );
                 }
             }
-            $editedFiles->push($file);
+            $editedFiles[] = $file;
         }
         return $editedFiles;
     }

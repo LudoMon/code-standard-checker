@@ -2,7 +2,7 @@
 
 namespace LMO\CodeStandard\Checker;
 
-use LMO\CodeStandard\FileSystem\Files;
+use LMO\CodeStandard\FileSystem\EditedFile;
 use Symfony\Component\Process\Process;
 
 class PhpCsChecker extends CheckerAbstract
@@ -10,7 +10,7 @@ class PhpCsChecker extends CheckerAbstract
     protected $extensions = ['php' => true];
 
     /**
-     * @param Files $files
+     * @param EditedFile[] $files
      * @return array An array of error messages
      */
     protected function getErrors($files)
@@ -42,7 +42,7 @@ class PhpCsChecker extends CheckerAbstract
     }
 
     /**
-     * @param Files $files
+     * @param EditedFile[] $files
      * @return \SimpleXMLElement[]
      */
     protected function runPhpCs($files)

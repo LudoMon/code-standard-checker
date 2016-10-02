@@ -3,7 +3,7 @@
 namespace LMO\CodeStandard\Checker;
 
 use LMO\CodeStandard\FileSystem\EditedFile;
-use LMO\CodeStandard\FileSystem\Files;
+use LMO\CodeStandard\FileSystem\FileManager;
 
 abstract class CheckerAbstract
 {
@@ -13,40 +13,53 @@ abstract class CheckerAbstract
     protected $extensions = [];
     protected $config = [];
 
+    /**
+     * @var FileManager
+     */
+    protected $fileManager;
+
     private $name;
 
-    public function __construct()
+    /**
+     * @param FileManager $fileManager
+     * @throws \Exception
+     */
+    public function __construct($fileManager)
     {
         if (empty($this->extensions)) {
             throw new \Exception(
                 'A checker must care about file extensions'
             );
         }
+        $this->fileManager = $fileManager;
     }
 
     /**
-     * @param Files  $files
+     * @param EditedFile[]  $files
      * @return array An array of error messages
      */
     abstract protected function getErrors($files);
 
     /**
-     * @param Files $files
+     * @param EditedFile[] $files
      * @return array
      * @throws \Exception
      */
     public function checkFiles($files)
     {
-        $filesToCheck = $files->filterByExtensions($this->extensions);
-        if ($filesToCheck->count() === 0) {
+        $filesToCheck = $this->fileManager->filterFilesByExtensions(
+            $files,
+            $this->extensions
+        );
+        if (empty($filesToCheck)) {
             return [];
         }
         return $this->getErrors($filesToCheck);
     }
 
     /**
-     * @param string $fileName (Absolute path)
-     * @param Files  $files
+     * @param string       $fileName (Absolute path)
+     * @param EditedFile[] $files
      * @return EditedFile|bool
      */
     protected function findEditedFile($fileName, $files)

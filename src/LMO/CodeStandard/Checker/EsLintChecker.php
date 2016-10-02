@@ -2,7 +2,7 @@
 
 namespace LMO\CodeStandard\Checker;
 
-use LMO\CodeStandard\FileSystem\Files;
+use LMO\CodeStandard\FileSystem\EditedFile;
 use Symfony\Component\Process\Process;
 
 class EsLintChecker extends CheckerAbstract
@@ -10,7 +10,7 @@ class EsLintChecker extends CheckerAbstract
     protected $extensions = ['js' => true];
 
     /**
-     * @param Files $files
+     * @param EditedFile[] $files
      * @return array An array of error messages
      */
     protected function getErrors($files)
@@ -36,7 +36,7 @@ class EsLintChecker extends CheckerAbstract
     }
 
     /**
-     * @param Files $files
+     * @param EditedFile[] $files
      * @return mixed
      */
     protected function runEsLint($files)
