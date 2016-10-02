@@ -90,6 +90,7 @@ class CheckStagedCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $hasSeveralStandards = count($this->standardsConfig) > 1;
         $hasError = false;
         $this->printStartMessage($output);
         $editedFiles = $this->getEditedFiles();
@@ -97,11 +98,13 @@ class CheckStagedCommand extends Command
             if (empty($this->checkers[$standardName])) {
                 continue;
             }
+            if ($hasSeveralStandards) {
+                $this->printStandardNameMessage($output, $standardName);
+            }
             foreach ($this->checkers[$standardName] as $checker) {
                 $errorMessages = $checker->checkFiles($files);
                 if (!empty($errorMessages)) {
                     $hasError = true;
-                    $output->writeln('');
                     $output->writeln(
                         '<bg=yellow;fg=black>' .
                         $checker->getName() . ' found the following errors</>'
@@ -126,6 +129,21 @@ class CheckStagedCommand extends Command
         $output->writeln('<question>                             </question>');
         $output->writeln('<question>       PRE-COMMIT HOOK       </question>');
         $output->writeln('<question>                             </question>');
+        $output->writeln('');
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param string          $standardName
+     * @return void
+     */
+    private function printStandardNameMessage(
+        OutputInterface $output,
+        $standardName
+    ) {
+        $output->writeln(
+            '<info>' . $standardName . ' standard check...</info>'
+        );
     }
 
     /**
