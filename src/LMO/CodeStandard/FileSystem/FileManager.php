@@ -61,13 +61,14 @@ class FileManager
 
     /**
      * @param EditedFile[] $files
-     * @param string       $fileName
+     * @param string       $fileName File path (can be an absolute path)
      * @return bool|EditedFile
      */
     public function findFileByName($files, $fileName)
     {
+        $fileName = str_replace('\\', '/', $fileName);
         foreach ($files as $file) {
-            if ($file->getName() === $fileName) {
+            if (substr($fileName, -strlen($file->getName())) === $file->getName()) {
                 return $file;
             }
         }
