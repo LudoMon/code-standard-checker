@@ -42,7 +42,7 @@ class EsLintChecker extends CheckerAbstract
     protected function runEsLint($files)
     {
         $results = [];
-        $command = $this->vendorDirectories['node'] . 'eslint_d' .
+        $command = $this->vendorDirectories['node'] . 'eslint' .
             ' --no-eslintrc --format=json  --config ' . $this->config['standard'] .
             ' --stdin --stdin-filename=';
         foreach ($files as $file) {
