@@ -1,5 +1,5 @@
 {
-  "name": "Code standard checker",
+  "name": "code-standard-checker",
   "version": "1.0.0",
   "description": "Perform automated code standards checks before commit",
   "repository": {
@@ -12,8 +12,7 @@
     "url": "https://github.com/LudoMon/code-standard-checker/issues"
   },
   "homepage": "https://github.com/LudoMon/code-standard-checker",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "eslint": "^3.7.1",
     "eslint-config-airbnb": "^12.0.0",
     "eslint-plugin-import": "^1.16.0",
