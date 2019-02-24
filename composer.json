@@ -6,7 +6,9 @@
         "squizlabs/php_codesniffer": "^2.6",
         "symfony/console": "^3.0",
         "symfony/process": "^3.0",
-        "symfony/yaml": "^3.0"
+        "symfony/yaml": "^3.0",
+        "ext-json": "*",
+        "ext-simplexml": "*"
     },
     "authors": [
         {
