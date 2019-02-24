@@ -9,7 +9,7 @@ class FileManager
      * @param EditedFile[] $files
      * @return string[]
      */
-    public function getFileNames($files)
+    public function getFileNames(array $files): array
     {
         return array_map(function ($file) {
             return $file->getName();
@@ -21,7 +21,7 @@ class FileManager
      * @param array        $extensions
      * @return EditedFile[]
      */
-    public function filterFilesByExtensions($files, $extensions)
+    public function filterFilesByExtensions(array $files, array $extensions): array
     {
         return array_filter($files, function ($file) use ($extensions) {
             return isset($extensions[$file->getExtension()]);
@@ -33,7 +33,7 @@ class FileManager
      * @param array        $standards
      * @return EditedFile[][]
      */
-    public function groupFilesByStandard($files, $standards)
+    public function groupFilesByStandard(array $files, array $standards): array
     {
         $secondaryStandards = $standards;
         unset($secondaryStandards['main']);
@@ -63,8 +63,9 @@ class FileManager
      * @param EditedFile[] $files
      * @param string       $fileName File path (can be an absolute path)
      * @return bool|EditedFile
+     * @todo Avoid two return types
      */
-    public function findFileByName($files, $fileName)
+    public function findFileByName(array $files, string $fileName)
     {
         $fileName = str_replace('\\', '/', $fileName);
         foreach ($files as $file) {

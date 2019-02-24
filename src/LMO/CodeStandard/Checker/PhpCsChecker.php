@@ -13,7 +13,7 @@ class PhpCsChecker extends CheckerAbstract
      * @param EditedFile[] $files
      * @return array An array of error messages
      */
-    protected function getErrors($files)
+    protected function getErrors(array $files): array
     {
         $this->checkConfigFile('standard');
         $phpCsResult = $this->runPhpCs($files);
@@ -45,7 +45,7 @@ class PhpCsChecker extends CheckerAbstract
      * @param EditedFile[] $files
      * @return \SimpleXMLElement[]
      */
-    protected function runPhpCs($files)
+    protected function runPhpCs(array $files): array
     {
         $results = [];
         $command = $this->vendorDirectories['composer'] . 'phpcs' .

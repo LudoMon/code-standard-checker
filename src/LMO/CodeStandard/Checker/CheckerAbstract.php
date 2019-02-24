@@ -24,7 +24,7 @@ abstract class CheckerAbstract
      * @param FileManager $fileManager
      * @throws \Exception
      */
-    public function __construct($fileManager)
+    public function __construct(FileManager $fileManager)
     {
         if (empty($this->extensions)) {
             throw new \Exception(
@@ -38,14 +38,14 @@ abstract class CheckerAbstract
      * @param EditedFile[]  $files
      * @return array An array of error messages
      */
-    abstract protected function getErrors($files);
+    abstract protected function getErrors(array $files): array;
 
     /**
      * @param EditedFile[] $files
      * @return array
      * @throws \Exception
      */
-    public function checkFiles($files)
+    public function checkFiles(array $files): array
     {
         $filesToCheck = $this->fileManager->filterFilesByExtensions(
             $files,
@@ -59,9 +59,9 @@ abstract class CheckerAbstract
 
     /**
      * @param array $config
-     * @return static
+     * @return $this
      */
-    public function setConfig($config)
+    public function setConfig(array $config): CheckerAbstract
     {
         $this->config = $config;
         return $this;
@@ -71,7 +71,7 @@ abstract class CheckerAbstract
      * @param string $configKey
      * @param string $errorMessage
      */
-    protected function checkConfigFile($configKey, $errorMessage = '')
+    protected function checkConfigFile(string $configKey, string $errorMessage = ''): void
     {
         if (!file_exists($this->config[$configKey]) &&
             file_exists($this->configPath . DIRECTORY_SEPARATOR . $this->config[$configKey])
@@ -87,9 +87,9 @@ abstract class CheckerAbstract
 
     /**
      * @param array $vendorDirectories
-     * @return static
+     * @return $this
      */
-    public function setVendorDirectories($vendorDirectories)
+    public function setVendorDirectories(array $vendorDirectories): CheckerAbstract
     {
         $this->vendorDirectories = $vendorDirectories;
         return $this;
@@ -98,16 +98,16 @@ abstract class CheckerAbstract
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
      * @param string $name
-     * @return static
+     * @return $this
      */
-    public function setName($name)
+    public function setName(string $name): CheckerAbstract
     {
         $this->name = $name;
         return $this;
@@ -115,9 +115,9 @@ abstract class CheckerAbstract
 
     /**
      * @param string $scriptPath
-     * @return static
+     * @return $this
      */
-    public function setScriptPath($scriptPath)
+    public function setScriptPath(string $scriptPath): CheckerAbstract
     {
         $this->scriptPath = $scriptPath;
         return $this;
@@ -125,9 +125,9 @@ abstract class CheckerAbstract
 
     /**
      * @param string $configPath
-     * @return static
+     * @return $this
      */
-    public function setConfigPath($configPath)
+    public function setConfigPath(string $configPath): CheckerAbstract
     {
         $this->configPath = $configPath;
         return $this;

@@ -8,7 +8,7 @@ class EditedFile
     protected $extension;
     protected $editedLines = [];
     
-    public function __construct($path)
+    public function __construct(string $path)
     {
         $this->path = $path;
         $this->extension = strtolower(pathinfo($path, PATHINFO_EXTENSION));
@@ -17,8 +17,9 @@ class EditedFile
     /**
      * @param string $lineNumber
      * @param string $lineContent
+     * @return void
      */
-    public function registerEditedLine($lineNumber, $lineContent)
+    public function registerEditedLine(string $lineNumber, string $lineContent): void
     {
         $this->editedLines[$lineNumber] = $lineContent;
     }
@@ -26,7 +27,7 @@ class EditedFile
     /**
      * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return $this->extension;
     }
@@ -34,7 +35,7 @@ class EditedFile
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->path;
     }
@@ -42,7 +43,7 @@ class EditedFile
     /**
      * @return array
      */
-    public function getEditedLines()
+    public function getEditedLines(): array
     {
         return $this->editedLines;
     }

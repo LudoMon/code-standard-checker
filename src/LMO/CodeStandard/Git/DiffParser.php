@@ -10,7 +10,7 @@ class DiffParser
      * @param string $diff
      * @return EditedFile[]
      */
-    public function parse($diff)
+    public function parse(string $diff): array
     {
         $editedFiles = [];
         $filesDiff = explode('+++ b/', $diff);

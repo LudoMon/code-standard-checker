@@ -15,7 +15,7 @@ class ForbiddenWordsChecker extends CheckerAbstract
      * @param EditedFile[] $files
      * @return array An array of error messages
      */
-    protected function getErrors($files)
+    protected function getErrors(array $files): array
     {
         $errors = [];
         foreach ($files as $file) {

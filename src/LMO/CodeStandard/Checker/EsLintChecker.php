@@ -13,7 +13,7 @@ class EsLintChecker extends CheckerAbstract
      * @param EditedFile[] $files
      * @return array An array of error messages
      */
-    protected function getErrors($files)
+    protected function getErrors(array $files): array
     {
         $errorMessages = [];
         $this->checkConfigFile('standard', 'EsLint standard file not found');
@@ -37,9 +37,9 @@ class EsLintChecker extends CheckerAbstract
 
     /**
      * @param EditedFile[] $files
-     * @return mixed
+     * @return array
      */
-    protected function runEsLint($files)
+    protected function runEsLint(array $files): array
     {
         $results = [];
         $command = $this->vendorDirectories['node'] . 'eslint' .

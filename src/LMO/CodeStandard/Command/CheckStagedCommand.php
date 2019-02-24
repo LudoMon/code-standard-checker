@@ -46,7 +46,7 @@ class CheckStagedCommand extends Command
     /**
      * @param string $scriptPath
      */
-    public function __construct($scriptPath)
+    public function __construct(string $scriptPath)
     {
         $this->diffParser = new DiffParser();
         $this->fileManager = new  FileManager();
@@ -124,7 +124,7 @@ class CheckStagedCommand extends Command
      * @param OutputInterface $output
      * @return void
      */
-    private function printStartMessage(OutputInterface $output)
+    private function printStartMessage(OutputInterface $output): void
     {
         $output->writeln('<question>                             </question>');
         $output->writeln('<question>       PRE-COMMIT HOOK       </question>');
@@ -139,8 +139,8 @@ class CheckStagedCommand extends Command
      */
     private function printStandardNameMessage(
         OutputInterface $output,
-        $standardName
-    ) {
+        string $standardName
+    ): void {
         $output->writeln(
             '<info>' . $standardName . ' standard check...</info>'
         );
@@ -151,7 +151,7 @@ class CheckStagedCommand extends Command
      * @param bool            $hasError
      * @return void
      */
-    private function printEndMessage(OutputInterface $output, $hasError)
+    private function printEndMessage(OutputInterface $output, bool $hasError): void
     {
         $output->writeln('');
         if (!$hasError) {
@@ -171,7 +171,7 @@ class CheckStagedCommand extends Command
      *
      * @return void
      */
-    private function instantiateCheckers($configPath)
+    private function instantiateCheckers(string $configPath): void
     {
         foreach ($this->standardsConfig as $standardName => $standard) {
             if (empty($standard['checkers'])) {
@@ -204,7 +204,7 @@ class CheckStagedCommand extends Command
     /**
      * @return EditedFile[][] Edited files, grouped by standard
      */
-    private function getEditedFiles()
+    private function getEditedFiles(): array
     {
         $process = new Process(
             'git diff -U0 --diff-filter=ACMR --cached'
@@ -225,7 +225,7 @@ class CheckStagedCommand extends Command
      * @param string $scriptPath
      * @return void
      */
-    private function initVendorDirectories($scriptPath)
+    private function initVendorDirectories(string $scriptPath): void
     {
         $this->vendorDirectories = [
             'composer' => $scriptPath . DIRECTORY_SEPARATOR .
