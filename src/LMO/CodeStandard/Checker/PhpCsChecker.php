@@ -23,7 +23,7 @@ class PhpCsChecker extends CheckerAbstract
                 $files,
                 (string) $fileName
             );
-            $editedFileName = pathinfo($editedFile->getName(), PATHINFO_BASENAME);
+            $editedFileName = $editedFile->getName();
             $editedLines = $editedFile->getEditedLines();
             foreach ($phpCsFile->warning as $warning) {
                 if (isset($editedLines[(int) $warning['line']])) {
