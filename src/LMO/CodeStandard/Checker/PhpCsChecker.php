@@ -49,7 +49,7 @@ class PhpCsChecker extends CheckerAbstract
     {
         $results = [];
         $command = $this->vendorDirectories['composer'] . 'phpcs' .
-            ' --report=xml  --standard=' . $this->config['standard'];
+            ' --report=xml  --standard=' . $this->config['standard'] . ' -';
         foreach ($files as $file) {
             $process = new Process(
                 'git show :' . $file->getName() . ' | ' . $command
